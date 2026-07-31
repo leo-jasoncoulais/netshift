@@ -11,7 +11,7 @@
 
 ## Notes
 
-- **Netguard** et **Debbie** sont les deux seuls nœuds fixes de l'infrastructure ; ils partagent le même réseau local physique à domicile (sans passerelle unique commune côté domicile — chaque machine a sa propre interface WireGuard indépendante vers le VPS).
+- **Netguard** et **Debbie** sont les deux seuls nœuds fixes de l'infrastructure.
 - **Artemis** change en permanence de réseau physique (déplacements), ce qui justifie particulièrement l'usage du `PersistentKeepalive`.
 - **GitHub Actions** est un peer purement fonctionnel : sa configuration WireGuard est provisionnée pour la durée du job CI, avec un accès SSH restreint vers Debbie pour les déploiements applicatifs.
-- **Windaube ↔ Lunalex/Artemis** : lien fonctionnel de streaming de jeu (Moonlight côté client, Apollo/Kyber côté hôte sur Windaube), qui transite par le tunnel WireGuard partiel entre pairs du même réseau `172.30.0.0/16`.
+- **Windaube ↔ Lunalex/Artemis** : lien fonctionnel de streaming de jeu (Moonlight/Kyber côté client, Apollo/Kyber côté hôte sur Windaube), qui transite par le tunnel WireGuard partiel entre pairs du même réseau `172.30.0.0/16`.
