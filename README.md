@@ -15,7 +15,6 @@ Dossier d'Architecture Technique (DAT) documentant mon infrastructure réseau pe
 | [05 — Règles de pare-feu](docs/05-firewall-rules.md) | iptables — VPS & serveur principal |
 | [06 — Reverse proxy](docs/06-reverse-proxy.md) | Configuration Caddy, domaines |
 | [07 — Risques & pistes d'amélioration](docs/07-risks-and-improvements.md) | SPOF, monitoring, sauvegardes, roadmap |
-| [08 — Durcissement (hardening)](docs/08-hardening.md) | GitHub Actions, en-têtes HTTP, DNSSEC/CAA, Portainer, Vaultwarden |
 
 ## En bref
 
