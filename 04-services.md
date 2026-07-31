@@ -26,6 +26,3 @@ Deux mécanismes d'exposition coexistent, tous deux gérés par **Caddy** sur Ne
 
 Le **serveur Minecraft** déroge à ce schéma : le protocole (TCP brut) n'étant pas proxifiable par Cloudflare, le port 25565 est ouvert directement sur l'IP publique du VPS, avec DNAT vers Debbie. Un accès via le VPN reste possible mais n'apporte aucun avantage particulier.
 
-## Cas particuliers non documentés
-
-Deux conteneurs supplémentaires tournent sur Debbie, liés à un projet personnel non documenté dans ce repository à la demande de son propriétaire.
