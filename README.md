@@ -8,13 +8,13 @@ Dossier d'Architecture Technique (DAT) documentant mon infrastructure réseau pe
 
 | Document | Contenu |
 |---|---|
-| [01 — Architecture générale](docs/01-architecture.md) | Vue d'ensemble, topologie, schéma réseau |
-| [02 — Plan d'adressage](docs/02-network-plan.md) | Sous-réseaux, IP, MTU, WireGuard |
-| [03 — Inventaire des peers](docs/03-peers-inventory.md) | Détail des machines connectées |
-| [04 — Services hébergés](docs/04-services.md) | Liste des services, exposition, ports |
-| [05 — Règles de pare-feu](docs/05-firewall-rules.md) | iptables — VPS & serveur principal |
-| [06 — Reverse proxy](docs/06-reverse-proxy.md) | Configuration Caddy, domaines |
-| [07 — Risques & pistes d'amélioration](docs/07-risks-and-improvements.md) | SPOF, monitoring, sauvegardes, roadmap |
+| [01 — Architecture générale](01-architecture.md) | Vue d'ensemble, topologie, schéma réseau |
+| [02 — Plan d'adressage](02-network-plan.md) | Sous-réseaux, IP, MTU, WireGuard |
+| [03 — Inventaire des peers](03-peers-inventory.md) | Détail des machines connectées |
+| [04 — Services hébergés](04-services.md) | Liste des services, exposition, ports |
+| [05 — Règles de pare-feu](05-firewall-rules.md) | iptables — VPS & serveur principal |
+| [06 — Reverse proxy](06-reverse-proxy.md) | Configuration Caddy, domaines |
+| [07 — Risques & pistes d'amélioration](07-risks-and-improvements.md) | SPOF, monitoring, sauvegardes, roadmap |
 
 ## En bref
 
