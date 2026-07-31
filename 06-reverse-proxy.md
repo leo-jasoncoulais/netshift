@@ -24,13 +24,13 @@ Pour les domaines bindés sur `172.30.0.1`, Caddy applique une double protection
 2. **Filtrage applicatif explicite** :
 
 ```caddyfile
-@blocked not remote_ip 172.30.0.0/24 172.30.10.0/24
+@blocked not remote_ip 172.30.0.0/16
 handle @blocked {
     respond 403
 }
 ```
 
-Cette règle est une défense en profondeur : elle protège notamment contre un scénario de mauvaise configuration réseau qui rendrait l'IP accessible autrement qu'via le VPN.
+Cette règle est une défense en profondeur : elle protège l'infrastructure réservée à l'utilisation d'administration à celle dédiée à d'autres personnes.
 
 ## Cas particuliers
 
