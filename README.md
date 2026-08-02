@@ -8,12 +8,12 @@ Dossier d'Architecture Technique (DAT) documentant mon infrastructure réseau pe
 
 | Document | Contenu |
 |---|---|
-| [01 — Architecture générale](docs/01-architecture.md) | Vue d'ensemble, topologie, schéma réseau |
-| [02 — Plan d'adressage](docs/02-network-plan.md) | Sous-réseaux, MTU, WireGuard, filtrage |
-| [03 — Inventaire des peers](docs/03-peers-inventory.md) | Détail des machines connectées |
-| [04 — Services & reverse proxy](docs/04-services.md) | Services hébergés, exposition, Caddy |
-| [05 — Règles de pare-feu](docs/05-firewall-rules.md) | iptables — VPS & serveur principal |
-| [06 — Risques & pistes d'amélioration](docs/06-risks-and-improvements.md) | SPOF, monitoring, sauvegardes, roadmap |
+| [01 — Architecture générale](01-architecture.md) | Vue d'ensemble, topologie, schéma réseau |
+| [02 — Plan d'adressage](02-network-plan.md) | Sous-réseaux, MTU, WireGuard, filtrage |
+| [03 — Inventaire des peers](03-peers-inventory.md) | Détail des machines connectées |
+| [04 — Services & reverse proxy](04-services.md) | Services hébergés, exposition, Caddy |
+| [05 — Règles de pare-feu](05-firewall-rules.md) | iptables — VPS & serveur principal |
+| [06 — Risques & pistes d'amélioration](06-risks-and-improvements.md) | SPOF, monitoring, sauvegardes, roadmap |
 
 ## En bref
 
