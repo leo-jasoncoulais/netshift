@@ -32,20 +32,6 @@ Deux mécanismes d'exposition coexistent, tous deux gérés par Caddy sur Netgua
    ```
    Cette règle est une défense en profondeur, complémentaire à la non-routabilité de l'IP.
 
-## Backends internes
-
-| Service | Backend (référence interne) | Notes |
-|---|---|---|
-| Portainer | Debbie, TLS interne | `tls_insecure_skip_verify` car certificat auto-signé côté Portainer |
-| Vaultwarden | Debbie | — |
-| Obsidian (LiveSync) | Debbie | — |
-| Home Assistant | Debbie | — |
-| Pi-hole | Debbie | Web + DNS |
-| Matrix (Synapse) | Debbie | Fédération + `.well-known` |
-| RustyPaste | Debbie | Upload restreint applicativement au VPN, download public |
-| Speakeasy | Debbie (conteneur Docker sur adresse interne atypique, hors plage standard) | Basic Auth (bcrypt) en complément de l'authentification applicative |
-| `wireguard-ui` | Netguard (local) | — |
-
 ## Cas particuliers
 
 - **Minecraft** ne passe pas par Caddy : le protocole n'étant pas HTTP, l'exposition se fait directement via DNAT iptables sur Netguard (voir [05 — Règles de pare-feu](05-firewall-rules.md)). Un accès via le VPN reste possible mais n'apporte aucun avantage particulier — Minecraft est destiné à des amis externes au réseau.
@@ -53,6 +39,3 @@ Deux mécanismes d'exposition coexistent, tous deux gérés par Caddy sur Netgua
 - **Speakeasy** est protégé par une couche `basicauth` supplémentaire malgré son exposition publique, en plus de son authentification applicative éventuelle.
 - **RustyPaste** a un comportement asymétrique : le téléchargement de fichiers déjà publiés est public ; la publication elle-même nécessite d'être connecté au VPN (contrainte imposée côté application, pas au niveau du vhost Caddy).
 
-## Cas non documentés
-
-Deux conteneurs supplémentaires tournent sur Debbie, liés à un projet personnel non documenté dans ce repository à la demande de son propriétaire.
