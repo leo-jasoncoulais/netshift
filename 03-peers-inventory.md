@@ -11,6 +11,6 @@
 
 ## Notes
 
-- **Netguard** et **Debbie** sont les deux seuls nœuds fixes de l'infrastructure.
+- **Netguard**, **Debbie** et **Windaube** sont les seuls nœuds fixes de l'infrastructure.
 - **GitHub Actions** est un peer purement fonctionnel : sa configuration WireGuard est provisionnée pour la durée du job CI, avec un accès SSH restreint vers Debbie pour les déploiements applicatifs.
 - **Windaube ↔ Lunalex/Artemis** : lien fonctionnel de streaming de jeu (Moonlight côté client, Apollo/Kyber côté hôte sur Windaube), qui transite par le tunnel WireGuard partiel entre pairs du réseau VPN (`172.30.0.0/16`).
