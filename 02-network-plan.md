@@ -6,8 +6,8 @@ L'ensemble du réseau VPN appartient au bloc **`172.30.0.0/16`**. Un bloc **`172
 
 | Sous-réseau | Rôle | NAT | IPv6 |
 |---|---|---|---|
-| **Réseau partiel** | Uniquement le trafic à destination du réseau interne transite par le tunnel | Aucun (chaque machine directement connectée) | Non utilisé |
-| **Réseau full-tunnel** | Tout le trafic internet de la machine transite par le VPS | Masquerade en sortie sur le VPS (interface WireGuard / interface publique) | Non utilisé |
+| **`172.30.0.0/24`** (partiel) | Uniquement le trafic à destination du réseau interne transite par le tunnel | Aucun (chaque machine directement connectée) | Non utilisé |
+| **`172.30.10.0/24`** (full-tunnel) | Tout le trafic internet de la machine transite par le VPS | Masquerade en sortie sur le VPS (interface WireGuard / interface publique) | Non utilisé |
 
 > Un ancien sous-réseau tiers, lié à un usage externe aujourd'hui déprécié, a été remplacé par le réseau full-tunnel actuel. Non documenté davantage ici.
 
@@ -36,7 +36,7 @@ Un MTU plus élevé réduit l'overhead par paquet, ce qui est pertinent pour du 
 
 ## Répartition des configurations par peer
 
-| Peer | Réseau partiel | Réseau full-tunnel |
+| Peer | `172.30.0.0/24` (partiel) | `172.30.10.0/24` (full-tunnel) |
 |---|:---:|:---:|
 | Netguard (VPS) | — (hub) | — (hub) |
 | Debbie | ✅ | ❌ |
@@ -52,11 +52,11 @@ Ruleset en vigueur (mis à jour) :
 | Règle | Portée réelle |
 |---|---|
 | `172.30.0.0/16` → `172.30.0.0/16` | ✅ Bornée — couvre en un seul tenant les échanges internes (partiel ↔ partiel, partiel ↔ full-tunnel, full-tunnel ↔ full-tunnel) |
-| Réseau full-tunnel → toute destination | ⚠️ Bornée en source uniquement — nécessaire pour laisser les peers full-tunnel router leur trafic internet général vers l'extérieur |
+| `172.30.10.0/24` (full-tunnel) → toute destination | ⚠️ Bornée en source uniquement — nécessaire pour laisser les peers full-tunnel router leur trafic internet général vers l'extérieur |
 | Toute source → Debbie, port Minecraft (TCP) uniquement | ✅ Bornée précisément au port Minecraft — remplace l'ancienne règle qui acceptait tout trafic vers Debbie sans restriction de port |
 
 **Amélioration notable par rapport à l'audit précédent** : l'accès à Debbie depuis l'extérieur de `172.30.0.0/16` est désormais restreint au seul port Minecraft, au lieu d'une règle inconditionnelle qui acceptait tout protocole/port. Le risque de contournement d'une future segmentation (`172.40.0.0/16`) via Debbie est donc levé.
 
-La seule règle encore "ouverte" (réseau full-tunnel → toute destination) est bornée côté **source** : elle ne permet qu'aux peers full-tunnel d'émettre vers n'importe quelle destination (comportement attendu d'un full-tunnel), mais ne permet pas à une source externe non listée d'entrer. Elle ne pose donc pas de risque symétrique pour une future segmentation, tant qu'aucun tiers n'est lui-même placé dans ce sous-réseau.
+La seule règle encore "ouverte" (`172.30.10.0/24` → toute destination) est bornée côté **source** : elle ne permet qu'aux peers full-tunnel d'émettre vers n'importe quelle destination (comportement attendu d'un full-tunnel), mais ne permet pas à une source externe non listée d'entrer. Elle ne pose donc pas de risque symétrique pour une future segmentation, tant qu'aucun tiers n'est lui-même placé dans ce sous-réseau.
 
 En dehors de ce point, l'ensemble du bloc `172.30.0.0/16` constitue un **cercle de confiance unique** : aucune microsegmentation n'est appliquée entre peers internes.

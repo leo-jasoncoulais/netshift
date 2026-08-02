@@ -2,12 +2,12 @@
 
 | Nom | Réseau(x) | Rôle | Matériel | OS | Localisation |
 |---|---|---|---|---|---|
-| **Netguard** | Hub (les deux réseaux) | Hub WireGuard + reverse proxy (Caddy) | VPS Hetzner | Debian | Datacenter Hetzner |
-| **Debbie** | Partiel uniquement | Serveur principal — hébergement Docker | Mini-PC (ThinkCentre) | Debian | Domicile |
-| **Windaube** | Partiel + Full-tunnel | PC de jeu — streaming (Apollo/Kyber) | PC AM4, GPU haut de gamme | Windows | Domicile |
-| **Lunalex** | Partiel + Full-tunnel | Client Home Assistant + Moonlight | Téléphone | OneUI (Android) | Mobile |
-| **Artemis** | Partiel + Full-tunnel | Client Home Assistant + Moonlight | Laptop (Vivobook, léger) | Arch Linux | Mobile (déplacements permanents) |
-| **GitHub Actions** | Partiel uniquement | Déploiement CI/CD (SSH vers Debbie) | Runner GitHub-hosted | — | Cloud GitHub |
+| **Netguard** | Hub (`172.30.0.0/24` + `172.30.10.0/24`) | Hub WireGuard + reverse proxy (Caddy) | VPS Hetzner | Debian | Datacenter Hetzner |
+| **Debbie** | `172.30.0.0/24` uniquement | Serveur principal — hébergement Docker | Mini-PC (ThinkCentre) | Debian | Domicile |
+| **Windaube** | `172.30.0.0/24` + `172.30.10.0/24` | PC de jeu — streaming (Apollo/Kyber) | PC AM4, GPU haut de gamme | Windows | Domicile |
+| **Lunalex** | `172.30.0.0/24` + `172.30.10.0/24` | Client Home Assistant + Moonlight | Téléphone | OneUI (Android) | Mobile |
+| **Artemis** | `172.30.0.0/24` + `172.30.10.0/24` | Client Home Assistant + Moonlight | Laptop (Vivobook, léger) | Arch Linux | Mobile (déplacements permanents) |
+| **GitHub Actions** | `172.30.0.0/24` uniquement | Déploiement CI/CD (SSH vers Debbie) | Runner GitHub-hosted | — | Cloud GitHub |
 
 ## Notes
 

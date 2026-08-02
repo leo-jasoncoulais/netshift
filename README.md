@@ -8,17 +8,17 @@ Dossier d'Architecture Technique (DAT) documentant mon infrastructure réseau pe
 
 | Document | Contenu |
 |---|---|
-| [01 — Architecture générale](01-architecture.md) | Vue d'ensemble, topologie, schéma réseau |
-| [02 — Plan d'adressage](02-network-plan.md) | Sous-réseaux, MTU, WireGuard, filtrage |
-| [03 — Inventaire des peers](03-peers-inventory.md) | Détail des machines connectées |
-| [04 — Services & reverse proxy](04-services.md) | Services hébergés, exposition, Caddy |
-| [05 — Règles de pare-feu](05-firewall-rules.md) | iptables — VPS & serveur principal |
-| [06 — Risques & pistes d'amélioration](06-risks-and-improvements.md) | SPOF, monitoring, sauvegardes, roadmap |
+| [01 — Architecture générale](docs/01-architecture.md) | Vue d'ensemble, topologie, schéma réseau |
+| [02 — Plan d'adressage](docs/02-network-plan.md) | Sous-réseaux, MTU, WireGuard, filtrage |
+| [03 — Inventaire des peers](docs/03-peers-inventory.md) | Détail des machines connectées |
+| [04 — Services & reverse proxy](docs/04-services.md) | Services hébergés, exposition, Caddy |
+| [05 — Règles de pare-feu](docs/05-firewall-rules.md) | iptables — VPS & serveur principal |
+| [06 — Risques & pistes d'amélioration](docs/06-risks-and-improvements.md) | SPOF, monitoring, sauvegardes, roadmap |
 
 ## En bref
 
 - **Hub central** : VPS Hetzner, point de passage unique (pas de redondance), fait office de routeur WireGuard + reverse proxy.
-- **Réseau privé** : bloc `172.30.0.0/16`, découpé en réseau partiel et réseau full-tunnel. Un second bloc `172.40.0.0/16` est réservé à un futur réseau tiers.
+- **Réseau privé** : bloc `172.30.0.0/16`, découpé en `172.30.0.0/24` (partiel) et `172.30.10.0/24` (full-tunnel). Un second bloc `172.40.0.0/16` est réservé à un futur réseau tiers.
 - **6 peers** : 1 VPS, 1 serveur principal (Docker), 1 PC fixe, 1 laptop, 1 téléphone, 1 peer CI/CD (GitHub Actions).
 - **Exposition publique** via Cloudflare (DNS + proxy) et Caddy comme reverse proxy interne.
 - **Aucune redondance, aucun monitoring actif** à ce stade — infrastructure personnelle en évolution continue.

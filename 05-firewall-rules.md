@@ -29,10 +29,10 @@ Toutes les règles sont gérées via **iptables** (nf_tables backend). Aucun sec
 | Source | Destination | Action | Bornée ? |
 |---|---|---|---|
 | `172.30.0.0/16` | `172.30.0.0/16` | ACCEPT | ✅ Oui — couvre en une seule règle tous les échanges internes (partiel/full-tunnel) |
-| Réseau full-tunnel | Toute destination | ACCEPT | ⚠️ Bornée en source seulement — nécessaire à la sortie internet des peers full-tunnel |
+| `172.30.10.0/24` (full-tunnel) | Toute destination | ACCEPT | ⚠️ Bornée en source seulement — nécessaire à la sortie internet des peers full-tunnel |
 | Toute source | Debbie, port Minecraft (TCP) uniquement | ACCEPT | ✅ Oui — restreinte au seul port Minecraft |
 
-➡️ **Amélioration par rapport à la version précédente** : l'accès externe à Debbie est désormais borné au port Minecraft uniquement, alors qu'il était auparavant inconditionnel (tout protocole/port). Le risque identifié lors du précédent audit — un futur réseau tiers (`172.40.0.0/16`) capable d'atteindre Debbie ou le réseau full-tunnel sans restriction — est résolu pour Debbie, et non applicable côté full-tunnel puisque cette règle ne fait que laisser sortir le trafic des peers concernés (bornée en source), sans ouvrir d'entrée pour un tiers externe.
+➡️ **Amélioration par rapport à la version précédente** : l'accès externe à Debbie est désormais borné au port Minecraft uniquement, alors qu'il était auparavant inconditionnel (tout protocole/port). Le risque identifié lors du précédent audit — un futur réseau tiers (`172.40.0.0/16`) capable d'atteindre Debbie ou `172.30.10.0/24` sans restriction — est résolu pour Debbie, et non applicable côté full-tunnel puisque cette règle ne fait que laisser sortir le trafic des peers concernés (bornée en source), sans ouvrir d'entrée pour un tiers externe.
 
 ### NAT
 
