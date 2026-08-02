@@ -1,6 +1,6 @@
 # 05 — Règles de pare-feu (iptables)
 
-Toutes les règles sont gérées via **iptables** (nf_tables backend). Aucun secret ni IP publique complète n'est reproduit ci-dessous.
+Toutes les règles sont gérées via **iptables** (nf_tables backend). Aucun secret, IP réelle ou nom de domaine réel n'est reproduit ci-dessous.
 
 ## Netguard (VPS)
 
@@ -16,30 +16,30 @@ Toutes les règles sont gérées via **iptables** (nf_tables backend). Aucun sec
 
 | Source | Protocole/Port | Action | Commentaire |
 |---|---|---|---|
-| `lo` | tout | ACCEPT | Loopback |
-| `wg0` | tout | ACCEPT | Tunnel WireGuard — trafic interne de confiance |
-| `eth0` | ICMP | ACCEPT | Diagnostic réseau |
-| `eth0` | TCP/80, TCP/443 | ACCEPT | HTTP/HTTPS (Caddy) |
-| `eth0` | UDP/51820 | ACCEPT | Port d'écoute WireGuard |
-| `eth0` | TCP/25565 | ACCEPT | Serveur Minecraft (exposition directe) |
-| `wg0` | UDP/5201 | ACCEPT | `iperf3` — tests de débit ponctuels ⚠️ à fermer hors utilisation |
+| Interface loopback | tout | ACCEPT | Loopback |
+| Interface WireGuard | tout | ACCEPT | Tunnel WireGuard — trafic interne de confiance |
+| Interface publique | ICMP | ACCEPT | Diagnostic réseau |
+| Interface publique | TCP/80, TCP/443 | ACCEPT | HTTP/HTTPS (Caddy) |
+| Interface publique | UDP/51820 | ACCEPT | Port d'écoute WireGuard |
+| Interface publique | TCP/25565 | ACCEPT | Serveur Minecraft (exposition directe) |
+| Interface WireGuard | UDP/5201 | ACCEPT | `iperf3` — tests de débit ponctuels ⚠️ à fermer hors utilisation |
 
 ### Règles FORWARD (routage inter-réseaux)
 
 | Source | Destination | Action | Bornée ? |
 |---|---|---|---|
 | `172.30.0.0/16` | `172.30.0.0/16` | ACCEPT | ✅ Oui — couvre en une seule règle tous les échanges internes (partiel/full-tunnel) |
-| `172.30.10.0/24` | **\* (toute destination)** | ACCEPT | ⚠️ Bornée en source seulement — nécessaire à la sortie internet des peers full-tunnel |
-| **\* (toute source)** | `172.30.0.2:25565/tcp` (Debbie, Minecraft) | ACCEPT | ✅ Oui — restreinte au seul port Minecraft |
+| Réseau full-tunnel | Toute destination | ACCEPT | ⚠️ Bornée en source seulement — nécessaire à la sortie internet des peers full-tunnel |
+| Toute source | Debbie, port Minecraft (TCP) uniquement | ACCEPT | ✅ Oui — restreinte au seul port Minecraft |
 
-➡️ **Amélioration par rapport à la version précédente** : l'accès externe à Debbie est désormais borné au port `25565/tcp` uniquement, alors qu'il était auparavant inconditionnel (tout protocole/port). Le risque identifié lors du précédent audit — un futur réseau tiers (`172.40.0.0/24`) capable d'atteindre Debbie ou `172.30.10.0/24` sans restriction — est résolu pour Debbie, et non applicable côté `172.30.10.0/24` puisque cette règle ne fait que laisser sortir le trafic des peers full-tunnel (bornée en source), sans ouvrir d'entrée pour un tiers externe.
+➡️ **Amélioration par rapport à la version précédente** : l'accès externe à Debbie est désormais borné au port Minecraft uniquement, alors qu'il était auparavant inconditionnel (tout protocole/port). Le risque identifié lors du précédent audit — un futur réseau tiers (`172.40.0.0/16`) capable d'atteindre Debbie ou le réseau full-tunnel sans restriction — est résolu pour Debbie, et non applicable côté full-tunnel puisque cette règle ne fait que laisser sortir le trafic des peers concernés (bornée en source), sans ouvrir d'entrée pour un tiers externe.
 
 ### NAT
 
 | Règle | Détail |
 |---|---|
-| DNAT | TCP/25565 → `172.30.0.2` (redirection Minecraft vers Debbie) |
-| MASQUERADE | Sortie via `eth0` (interface publique) et `wg0` (permet le full-tunnel des peers `172.30.10.0/24`) |
+| DNAT | TCP/25565 → Debbie (redirection Minecraft) |
+| MASQUERADE | Sortie via l'interface publique et l'interface WireGuard (permet le full-tunnel des peers concernés) |
 
 ## Debbie (serveur principal)
 
@@ -51,24 +51,24 @@ Toutes les règles sont gérées via **iptables** (nf_tables backend). Aucun sec
 
 ### Protection anti-spoofing (table `raw`)
 
-Chaque conteneur Docker exposé sur une IP de bridge dédiée est protégé par une règle `PREROUTING ... DROP` qui rejette tout paquet à destination de son IP interne **n'entrant pas par son bridge d'origine**. Cela empêche qu'un service accessible sur son IP de bridge Docker soit atteint via un chemin détourné (autre interface), et force tout accès externe à transiter strictement par les règles DNAT associées à l'IP WireGuard `172.30.0.2`.
+Chaque conteneur Docker exposé sur une IP de bridge dédiée est protégé par une règle `PREROUTING ... DROP` qui rejette tout paquet à destination de son IP interne **n'entrant pas par son bridge d'origine**. Cela empêche qu'un service accessible sur son IP de bridge Docker soit atteint via un chemin détourné (autre interface), et force tout accès externe à transiter strictement par les règles DNAT associées à l'IP WireGuard de Debbie.
 
-### Redirections NAT (DNAT) — IP WireGuard `172.30.0.2` vers conteneurs internes
+### Redirections NAT (DNAT) — IP WireGuard de Debbie vers conteneurs internes
 
-| Port exposé (172.30.0.2) | Destination interne | Service |
+| Port exposé (Debbie) | Destination interne | Service |
 |---|---|---|
 | 8082 | Bridge dédié : 80 | Vaultwarden |
 | 8084 | Bridge dédié : 3000 | Obsidian (LiveSync) |
 | 8085 | Bridge dédié : 80 / 53 | Pi-hole (web + DNS) |
 | 8086 | Bridge dédié : 8008 | Matrix (Synapse) |
 | 8087 | — | RustyPaste |
-| 8088 | 192.168.0.2:3000 | Speakeasy (cocktails) |
-| 8000 / 9443 | `docker0` | Portainer |
+| 8088 | Adresse interne atypique, hors plage Docker standard | Speakeasy (cocktails) |
+| 8000 / 9443 | Bridge Docker par défaut | Portainer |
 | 8089, 8280 | Bridge dédié | *(projet personnel non documenté)* |
 
 ### Isolation des bridges Docker
 
-Chaque réseau Docker (`br-xxxxx`) est isolé par défaut (`DROP` sur le trafic ne provenant pas de son propre bridge), avec acceptation explicite du trafic `RELATED,ESTABLISHED` et des flux entrants définis nommément dans `DOCKER-FORWARD`. C'est une isolation standard générée par le moteur Docker (pas une règle manuelle), garantissant qu'un conteneur ne peut pas nativement joindre le réseau d'un autre bridge sans règle DNAT explicite.
+Chaque réseau Docker (bridge dédié) est isolé par défaut (`DROP` sur le trafic ne provenant pas de son propre bridge), avec acceptation explicite du trafic `RELATED,ESTABLISHED` et des flux entrants définis nommément dans `DOCKER-FORWARD`. C'est une isolation standard générée par le moteur Docker (pas une règle manuelle), garantissant qu'un conteneur ne peut pas nativement joindre le réseau d'un autre bridge sans règle DNAT explicite.
 
 ## Limites actuelles
 
@@ -77,4 +77,4 @@ Chaque réseau Docker (`br-xxxxx`) est isolé par défaut (`DROP` sur le trafic 
 
 ## Bonne pratique constatée
 
-✅ **Aucun port SSH (22) n'est ouvert sur `eth0`** côté Netguard : l'administration du VPS ne se fait que depuis l'intérieur du réseau (`wg0`), ou via la console hors-bande du fournisseur (Hetzner) en dernier recours. Cela réduit significativement la surface d'attaque exposée publiquement, en évitant un vecteur d'attaque classique (brute-force SSH, scan de credentials).
+✅ **Aucun port SSH (22) n'est ouvert sur l'interface publique** côté Netguard : l'administration du VPS ne se fait que depuis l'intérieur du réseau (interface WireGuard), ou via la console hors-bande du fournisseur (Hetzner) en dernier recours. Cela réduit significativement la surface d'attaque exposée publiquement, en évitant un vecteur d'attaque classique (brute-force SSH, scan de credentials).
