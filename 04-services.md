@@ -37,5 +37,3 @@ Deux mécanismes d'exposition coexistent, tous deux gérés par Caddy sur Netgua
 - **Minecraft** ne passe pas par Caddy : le protocole n'étant pas HTTP, l'exposition se fait directement via DNAT iptables sur Netguard (voir [05 — Règles de pare-feu](05-firewall-rules.md)). Un accès via le VPN reste possible mais n'apporte aucun avantage particulier — Minecraft est destiné à des amis externes au réseau.
 - **Bot Discord** : fonctionnement "client" — le bot se connecte à l'API Discord, aucune exposition entrante n'est nécessaire.
 - **Speakeasy** est protégé par une couche `basicauth` supplémentaire malgré son exposition publique, en plus de son authentification applicative éventuelle.
-- **RustyPaste** a un comportement asymétrique : le téléchargement de fichiers déjà publiés est public ; la publication elle-même nécessite d'être connecté au VPN (contrainte imposée côté application, pas au niveau du vhost Caddy).
-
