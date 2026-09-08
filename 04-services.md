@@ -15,7 +15,7 @@ Tous les services sont conteneurisés (Docker) et hébergés sur **Debbie**, à 
 | **Application cocktails** ("Speakeasy") | Application personnelle (recettes de cocktails) | ✅ Public (via Cloudflare proxy) + Basic Auth | `speakeasy.example.com` |
 | **Serveur Minecraft** | Serveur de jeu pour amis | ✅ Public — IP directe du VPS (TCP brut, non proxifiable par Cloudflare) | `<IP publique VPS>:25565` |
 | **Serveur Obsidian (LiveSync)** | Synchronisation de notes | ❌ Interne au VPN uniquement | `obsidian.example.com` |
-| **RustyPaste** | Partage de fichiers/pastebin | ⚠️ Mixte : upload restreint au VPN, téléchargement public | `share.example.com` |
+| **Kuma** | Monitoring de netshift | ❌ Interne au VPN uniquement | `sauron.example.com` |
 | **`wireguard-ui`** | Interface de gestion WireGuard | ❌ Interne au VPN uniquement | `wg.example.com` |
 
 ## Mécanisme d'exposition via Caddy
