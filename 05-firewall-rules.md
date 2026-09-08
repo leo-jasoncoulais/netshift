@@ -61,7 +61,7 @@ Chaque conteneur Docker exposé sur une IP de bridge dédiée est protégé par 
 | 8084 | Bridge dédié : 3000 | Obsidian (LiveSync) |
 | 8085 | Bridge dédié : 80 / 53 | Pi-hole (web + DNS) |
 | 8086 | Bridge dédié : 8008 | Matrix (Synapse) |
-| 8087 | — | RustyPaste |
+| 8087 | Bridge dédié : 3001 | Kuma |
 | 8088 | Adresse interne atypique, hors plage Docker standard | Speakeasy (cocktails) |
 | 8000 / 9443 | Bridge Docker par défaut | Portainer |
 | 8089, 8280 | Bridge dédié | *(projet personnel non documenté)* |
