@@ -6,6 +6,7 @@ Tous les services sont conteneurisés (Docker) et hébergés sur **Debbie**, à 
 
 | Service | Rôle | Exposition publique | Domaine (placeholder) |
 |---|---|---|---|
+| **Kuma** | Monitoring de netshift | ❌ Interne au VPN uniquement | `example.com` |
 | **Portainer** | Gestion des conteneurs Docker | ❌ Interne au VPN uniquement | `portainer.example.com` |
 | **Bot Discord** | Bot applicatif personnel | ❌ Aucune (connexion sortante vers l'API Discord, aucun port entrant nécessaire) | — |
 | **Matrix (Synapse)** | Serveur de messagerie fédérée | ✅ Public (via Cloudflare proxy) | `matrix.example.com` |
@@ -15,7 +16,6 @@ Tous les services sont conteneurisés (Docker) et hébergés sur **Debbie**, à 
 | **Application cocktails** ("Speakeasy") | Application personnelle (recettes de cocktails) | ✅ Public (via Cloudflare proxy) + Basic Auth | `speakeasy.example.com` |
 | **Serveur Minecraft** | Serveur de jeu pour amis | ✅ Public — IP directe du VPS (TCP brut, non proxifiable par Cloudflare) | `<IP publique VPS>:25565` |
 | **Serveur Obsidian (LiveSync)** | Synchronisation de notes | ❌ Interne au VPN uniquement | `obsidian.example.com` |
-| **Kuma** | Monitoring de netshift | ❌ Interne au VPN uniquement | `sauron.example.com` |
 | **`wireguard-ui`** | Interface de gestion WireGuard | ❌ Interne au VPN uniquement | `wg.example.com` |
 
 ## Mécanisme d'exposition via Caddy
